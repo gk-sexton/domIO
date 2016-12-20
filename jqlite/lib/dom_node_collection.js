@@ -3,10 +3,10 @@ class DOMNodeCollection {
     this.HTMLElements = HTMLElements;
   }
 
-  html(string) {
-    if (typeof string === "string") {
+  html(input) {
+    if (typeof input === "string") {
       this.HTMLElements.forEach( element => {
-        element.innerHTML = string;
+        element.innerHTML = input;
       });
     } else {
       return this.HTMLElements[0].innerHTML;
@@ -18,13 +18,14 @@ class DOMNodeCollection {
   }
 
   append(arg) {
-    if (typeof arg === "string"){
-      this.HTMLElements.forEach( node =>{
-        node.innerHTML += arg;
+    if (typeof arg === 'string'){
+      this.HTMLElements.forEach( element =>{
+        element.innerHTML += arg;
       });
-    } else {
-      this.HTMLElements.forEach( node =>{
-        node.innerHTML += arg.outerHTML;
+    } else if (typeof arg === 'object'){
+      arg = $l(arg);
+      this.HTMLElements.forEach( element =>{
+        element.innerHTML += arg.outerHTML;
       });
     }
   }
@@ -108,7 +109,7 @@ class DOMNodeCollection {
     const defaults = {
       type: 'GET',
       success: (data) => { console.log(data);},
-      error: (data) => { console.log('Error!');}
+      error: (data) => { console.log('Error!', data);}
     };
 
     const mergedArgs = this.extend(defaults, optionsHash);
